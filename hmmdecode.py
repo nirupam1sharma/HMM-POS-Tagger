@@ -24,7 +24,7 @@ class ViterbiDecode:
         # with maximum probability
         self.index_tag_key = None
 
-        # todo
+        # a set of all the unique tags in the training corpus
         self.unique_tags = set()
         self.bigram_counts = None
 
@@ -71,9 +71,6 @@ class ViterbiDecode:
                     transition_prob = 0.0
                     viterbi_prob = self.recursive_probability_cal_sequence(word_sequence, index - 1, word_tag_i_1) + \
                                    transition_prob
-                    # Taking high negative value for probability when the tag combinations doesn't exists.
-                    # Transition probabilities
-                    # /viterbi_prob = -1000000.0
                 else:
                     # Viterbi probability for any sequence is
                     # Viterbi Probability from previous words +
@@ -105,13 +102,11 @@ class ViterbiDecode:
         # Reading the file to be decoded
         read_files = ReadFiles(file_name)
         all_tuples_raw = read_files.word_raw()
-        # self.word_tags_set = read_files.word_tags
         for tuple_raw in all_tuples_raw:
             max_viterbi_prob = -1000000.0
             self.word_tag_viterbi_probability = {}
             # length of the current sentence
             len_tuple_raw = len(tuple_raw)
-            # print(tuple_raw)
             if tuple_raw[len_tuple_raw - 1] in self.word_tags_set:
                 word_tags_i = self.word_tags_set[tuple_raw[len_tuple_raw - 1]]
             else:
@@ -127,7 +122,6 @@ class ViterbiDecode:
             tagged_sentence = []
             while self.index_tag_key[0] >= 2:
                 tagged_sentence.insert(0, tuple_raw[self.index_tag_key[0]] + "/" + self.index_tag_key[1])
-                # print(self.index_tag_key)
                 self.index_tag_key = self.word_tag_viterbi_probability[self.index_tag_key][1]
 
             output.write(" ".join(tagged_sentence) + "\n")

@@ -23,10 +23,10 @@ class CalProbabilities:
         # dictionary to store the transition probability for a given trigram combination
         self.transition_probabilities = {}
 
-        # todo
+        # a dictionary containing all the tags for every word. So key is a word and value is a set/list of tags
         self.word_tags_set = {}
 
-        # todo
+        # a set of all unique tags in the training corpus
         self.unique_tags = set()
 
     # calculate the word-tag counts and word counts and populate the respective dictionaries
@@ -102,20 +102,6 @@ class CalProbabilities:
             # computations are less costly
             # adding one to numerator and unique tag counts to denominator for smoothing
             self.transition_probabilities[trigram_tuple] = log(float(trigram_tuple_count+1)/float(bigram_count + unique_tags_count))
-
-# prob = CalProbabilities()
-# # call to populate the dictionaries
-# prob.populate_count_dicts()
-# prob.calculate_emission_probabilities()
-# print(len(prob.transition_probabilities))
-# word_tag_count_list = []
-# for key,value in prob.transition_probabilities.items():
-#     word_tag_count_list.append((key,value))
-#
-# word_tag_count_list = sorted(word_tag_count_list,key=lambda x:(x[1],x[0]))
-#
-# for tup in word_tag_count_list:
-#     print(tup)
 
 if __name__ == "__main__":
     filename = sys.argv[1]
